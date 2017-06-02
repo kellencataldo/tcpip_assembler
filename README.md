@@ -32,9 +32,9 @@ By default, the maximum size of the data is 10 MB, this can be manually increase
 
 All of these commands can be given in any order. For example to examine packets from a specific IP on a specific port without displaying connection headers and packet headers and resizing the maximum data amount to 15 megabytes, this command would be used:
 
-'''
+```
 ip_convo.exe -ip 127.0.0.1 -port 80 -ch -ph -rs 15
-'''
+```
 
 
 ## What to look for
