@@ -12,8 +12,8 @@ int main(int nargs, char * args[]) {
 	//specific port
 	//specific ip
 	//raw data = 0 / no data
-	uint8_t option_flags = 60;
-	uint16_t port = 49729;
+	uint8_t option_flags = 57;
+	uint16_t port = 0;
 	uint32_t ip = 0;
 	DATASIZE = 10000000;
 
