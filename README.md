@@ -36,6 +36,17 @@ All of these commands can be given in any order. For example to examine packets 
 ip_convo.exe -ip 127.0.0.1 -port 80 -ch -ph -rs 15
 ```
 
+In order to input a file, the stream must be directed to the stdin of the exe using **<**. This is done after adding any inputs. For example, if the path to the PCAP file was C:\path\to\example.pcap then the previous command would become:
+
+```
+ip_convo.exe -ip 127.0.0.1 -port 80 -ch -ph -rs 15 < C:\path\to\example.pcap
+```
+
+This will print the output values to the Windows cmd prompt. You probably don't want that. You really, really don't want that. In order to redirect the output stream use **>** and point to the path of the desired output file (there does not have to be a file in this location previous to running the command). For example, if the desired output path was C:\path\to\output.txt the previous command now becomes: 
+
+```
+ip_convo.exe -ip 127.0.0.1 -port 80 -ch -ph -rs 15 < C:\path\to\example.pcap > C:\path\to\output.txt
+```
 
 ## What to look for
 
