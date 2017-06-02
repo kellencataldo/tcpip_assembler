@@ -4,7 +4,7 @@
 
 uint8_t *data;
 int DATASIZE;
-
+//erasd
 int main(int nargs, char * args[]) {
 	//global header
 	//connection headers
