@@ -73,25 +73,11 @@ Following the global header is the converstaion header. Each field of the global
 
 ## How it works
 
+I chose c++ for this project as it has an extremely robust stream system which makes it easy to run through the file stream and gather data.
+
+Every conversation is given a unique ID. This ID is generated from two IPs involved in the conversation and the two ports used by each system which are then placed into a pairing function. The specific method used is a bitwise Z-order curve which will take two non-negative numbers and output a unique value. I used this method and not Georg Cantor's more well known pairing function as the Cantor paring function is quadratic, and therefore two numbers, each of size N, are not always bound to a number less than 2N. This unique ID made storing and sorting packets an easy process; if an ID for a packet was present in the list of already stored ID's, the packet was added to that conversation. If the ID is unique, a new conversation is initialized with this packet as the first member. 
 
 
-The problem is you are not linking against the Ws2_32.lib library
-
-
-
-IPV6 support has not been added as it would take considerably more effort 
-(ipv6 are often encapsulated under ipv4 so as to path through ipv4 only networks. this process is called
-a 6to4 transmission). 
-
-An ipv6 packet that has been ecanpsulated in an ipv4 packet will have a protocol type of 41. With that,
-it should be a relatively easy process using structure templates to sort between ipv4 packets, and ipv4 packets
-with an ipv6 packet encapsulated underneath.
-
-the conversations are sorted and ordered using a pairing function 
-the pairing function is generated in an anonymous function using the cantor sum, a quadratic pairing function
-this makes it a relativley simple task to check if a conversation between two IP's has already been stored
-unlike georg contors function, i am using a Z-order curve to pair my values as working with bits in c++ is far easier
-than working with big numbers. this means that given two numbers of size n, the unique result is guarenteed to be less than 2n
 
 ntohs is an inline function which makes it less computationally heavy on the compiler (??)
 
@@ -100,6 +86,14 @@ structures can often be treated as classes in c++ and have their own functions
 im using the bubble sort algorithm because it works very well on nearly sorted data sets. this should be the case for most packets as
 tcp will reject multiple out of place packets (?). i chose not to rely on the supplied vector::sort algorithm as i
 don't know the time complexity of the function.
+
+IPV6 support has not been added as it would take considerably more effort 
+(ipv6 are often encapsulated under ipv4 so as to path through ipv4 only networks. this process is called
+a 6to4 transmission). 
+
+An ipv6 packet that has been ecanpsulated in an ipv4 packet will have a protocol type of 41. With that,
+it should be a relatively easy process using structure templates to sort between ipv4 packets, and ipv4 packets
+with an ipv6 packet encapsulated underneath.
 
 
 talk about the big array
