@@ -99,7 +99,7 @@ void connection::print_packets(uint8_t option_flags, std::vector<combo>& packets
 		if ((option_flags & 1) == 1) {
 			fflush(stdout);
 			fwrite(data + packets.at(location).loc, 1, packets.at(location).size, stdout);
-			std::cout << std::endl << std::endl;
+			std::cout << std::endl;
 		} 
 	}
 	std::cout << std::endl;
@@ -124,8 +124,8 @@ void print_global_header(uint8_t option_flags, uint16_t port, uint32_t ip) {
 	std::cout << "Total unique TCP/IP connections: " << global_header.unique_connections;
 	std::cout << ". Total bytes transferred across connection(s): " << global_header.total_bytes << std::endl;
 	std::cout << "Total unique packets: " << global_header.unique_packets;
-	std::cout << ". Out of order packets detected: " << global_header.oop_packets;
-	std::cout << ". Possible duplicate packets detected: " << global_header.dup_packets;
+	std::cout << ". Out of order packets detected: " << global_header.oop_packets << std::endl;
+	std::cout << "Possible duplicate packets detected: " << global_header.dup_packets;
 	std::cout << ". Reset packets sent or recieved: " << global_header.resets << std::endl;
 	std::cout << "Total unsuccessful TCP teardowns: " << global_header.bad_closes << std::endl;
 	if ((option_flags & 4) == 4) {
