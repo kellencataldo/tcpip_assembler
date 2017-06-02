@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is a tool which will reconstruct TCP/IPv4 conversations between all IP's or a specific IP and across all ports or a specific port from data collected in a PCAP file. The tool will sort individual TCP conversations by packets and SEQ number and organize them between upload data and download data. Along with sorting the connections and packets, anomalous events detected in the TCP conversations such as an incorrect TCP teardown, set RESET bits, and duplicate packets being sent will be highlighted in the output file. This tool can be used to analyze network behavior coming into a Windows system in order to track suspicious behavior.
+This is a tool which will reconstruct TCP/IPv4 conversations between all IP's or a specific IP and across all ports or a specific port from data collected in a PCAP file. The tool will sort individual TCP conversations by packets and SEQ number and organize them between upload data and download data. Along with sorting the connections and packets, anomalous events detected in the TCP conversations such as an incorrect TCP teardown, set RESET bits, and duplicate packets being sent will be highlighted in the output file. This tool can be used to analyze network behavior coming into a Windows system in order to track malicious behavior.
 
 ## How to use
 
@@ -56,14 +56,22 @@ This is an example output generated from network activity
 
 This example includes the global header begining with *Total unique TCP/IP connections*, the conversation header beginning with *Connection between*, the packet headers beginning with *Relative sequence number*, and the data, which can be seen beneath the third packet.
 
-This network activity appears to be a relatively normal session with nothing out of the ordinary occuring. Starting with the global header, to unique TCP/IP conversations were detected. One conversation is distinguished from another conversation by the fourtuple associated with that conversation (source port, destination port, source IP, destination IP). During a browsing session, the same source IP from the same source port could connect to the same destination IP on two different ports and this will register as two seperate connections as the TCP handshake process must be done on both these ports. One type of attack to be aware of is a **malicious port scan**. A port scan involved a potentially malicious system repeatedly attempting to extablish a connection across numerous TCP ports in order to establish a TCP handshake thereby detected vulnerable ports. If the filters for a specific IP has been set, and the total number of connections is still high, this is evidence of a potential port scan on the host system.
+This network activity appears to be a relatively normal session with nothing out of the ordinary occuring. Starting with the global header, to unique TCP/IP conversations were detected. One conversation is distinguished from another conversation by the fourtuple associated with that conversation (source port, destination port, source IP, destination IP). During a browsing session, the same source IP from the same source port could connect to the same destination IP on two different ports and this will register as two seperate connections as the TCP handshake process must be done on both these ports. One type of attack to be aware of is a **malicious port scan**. A port scan involved a potentially malicious system repeatedly attempting to secure a connection across numerous TCP ports in order to establish a TCP handshake thereby detected vulnerable ports. If the filters for a specific IP has been set, and the total number of connections is still high, this is evidence of a potential port scan on the host system. 
+
+The total bytes field accounts for all data exchanged across all conversations. Similarly, the total unique packets accounts for all packets exchanged in the session. Across all ports, these numbers can be essentially anything without cause for suspicion. However, when examining a specific port, if these numbers are large and the cause is unknown, this most likely warrants further investigation. Its important to note that this is for only TCP/IP dat and packets, not all packets and data in the session. For example, audio and video streaming services mostly use the UDP protocol, so if streaming was occuring during the session, this would make the PCAP file relatively large, but the total TCP packets and bytes would be smaller in size.
+
+The out of order packets field should almost always be zero. Since TCP will reject out of order packets based on the ACK_SEQ, recieving TCP packets that are not in the correct order happens extremely rarely. If, however, this field is not set, it is most likely in error with the network adapter card, and not necessarily malicious activity. The next field, duplicate packets, is the number of duplicate packets sent or recieved in the session. This is followed by total reset packets sent or recieved and then by the total unsuccessful TCP teardown. A TCP teardown is essentially a TCP handshake in reverse, in which a FIN bit is set instead of a SYN bit. Many common types of malicious attacks will be detected by these fields. A **Syn flood DDoS attack** is one such type of attack in which a malicious system sends a SYN packet to a number of ports in order to initialize a TCP handshake. The host will faithfully send an ACK packet in return. When it does not recieve a similar ACK packet back, the host will continue sending duplicate packets, each time increasing the time to live (TTL) of the packet. On Windows systems, the default is five packets, on linux it can be anywhere from 8 to 15. This essentially holds the port hostage and therefore it will reject SYN packets from other valid connections. This type of attack will appear as an exponentially large amount of reset packets sent as well as incorrect TCP connection teardowns. 
+
+Another type of attack that will be detected by these fields is a **SYN-ACK flood**, which is slightly different from a SYN flood. These type of attack is mostly targeted at firewalls instead of denying service to other users. In a SYN-ACK flood, many spoofed TCP packets featuring random SEQ numbers will be sent to a system. The firewall on the system could potentially be overwhelmed while attempting to determine the cause of the out of order packets and thus might make the downstream system vulnerable. If this is the case on the host system (extremely rare), the unsuccessful TCP teardown field will be exponentially high. 
+
+The last type of attack worth mentioning that will be detected by these fields is a **TCP reset attack**. A TCP reset packet is an empty packet sent from one host to another with the RST flag set which will then immediately close the conversation. A reset attack exploites this by sending a forged TCP packet to a host which will close a TCP conversation to another system. In this scenario, the reset field would detect the total times that all conversation have been closed by a reset flag being set. However, this does not necessarily mean that a malicious reset packet was sent. In certain scenarios, a valid host will send a reset packet. A large amount would be cause for investigation.
+
+Following the global header is the converstaion header. Each field of the global header has a mirror in the conversation header which tracks the behavior of specific connections. After the conversation header, the data is divided into upload packets and download packets. **Note:**, the upload data corrosponds to which IP initiated the connection, not the data being uploaded from the host system. *Most* times this will also be the host system's upload data. However, in certain scenarios it could be the other way around. Despite how easy it would seem, it is actually fairly difficult to determine a local system's IP. At the least the system will have two IP's and in many scenarios will have even more. Each packet will also display the size of the packet in bytes, if a reset bit was set, and if a possible duplicate was deteceted. Empty packets are not cause for alarm. As can be seen in the example image, the first two packets sent contained no data. This is because a TCP connection was being initiated. After that, a packet containing an HTTP query was sent to a server. 
+
 
 ## How it works
 
 
-
-If you need to examine UDP, or another protocal such as ARP, this is best left to a more robust
-tool such as Wireshark.
 
 The problem is you are not linking against the Ws2_32.lib library
 
@@ -75,22 +83,12 @@ connection did not successfully signify that it was closing. attackers can take 
 opening up connections on ports without closing the connection. this causes ports to listen for a connection that isnt there
 and therefore reject other valid connections as the avaliable ports shrink. this is essentially a 
 sophisticated form of a DDoS attack.
-Another type of attack that this tool will reveal is an ack flooding attack. when this occurs, a malicious connection
-will repeatedly send the incorrect ack number to the host and therefore because of hte way tcp is implemented, the 
-host will faithfully attempt to respond with the correct sequence of data until the connection is terminated.
-this is similar to the syn_flooding attack except that the port is essentially held hostange as the connection will not time out.
 
-include upload data, download data
-include only the header
-examine only a specific port
-
-
-if (option set && correct port) or (option not set)
 
 IPV6 support has not been added as it would take considerably more effort 
 (ipv6 are often encapsulated under ipv4 so as to path through ipv4 only networks. this process is called
 a 6to4 transmission). 
-if you wanted to try examining ipv6 packets yourelf, i would suggest using type templates etc.
+
 An ipv6 packet that has been ecanpsulated in an ipv4 packet will have a protocol type of 41. With that,
 it should be a relatively easy process using structure templates to sort between ipv4 packets, and ipv4 packets
 with an ipv6 packet encapsulated underneath.
