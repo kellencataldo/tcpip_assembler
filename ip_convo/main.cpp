@@ -18,7 +18,7 @@ int main(int nargs, char * args[]) {
 	DATASIZE = 10000000;
 
 	for (int i = 1; i < nargs; i++) {
-		//c++ doesnt support string switch cases :(
+		//c++ doesnt support string switch cases unfortunatley
 		std::string arg = args[i];
 		if (arg == "-gh") { option_flags |= 32; }
 		if (arg == "-ch") { option_flags |= 16; }
