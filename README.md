@@ -52,7 +52,7 @@ ip_convo.exe -ip 127.0.0.1 -port 80 -ch -ph -rs 15 < C:\path\to\example.pcap > C
 
 This is an example output generated from network activity
 
-![example](http://i.imgur.com/d0qCfnC.png)
+![example](http://i.imgur.com/TucqqZ6.png)
 
 
 ## How it works
