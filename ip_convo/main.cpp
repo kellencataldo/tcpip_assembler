@@ -35,7 +35,7 @@ int main(int nargs, char * args[]) {
 			option_flags |= 1;
 		}
 		if (arg == "-rs" && i < nargs + 1) {
-			DATASIZE = atoi(args[i + 1]);
+			DATASIZE = atoi(args[i + 1]) * 1000000;
 		}
 	}
 	
