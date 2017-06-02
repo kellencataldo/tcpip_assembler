@@ -26,6 +26,10 @@ All of these can be turned off individually along with setting several other opt
 
 >Do not display data: **-nd**
 
+By default, the maximum size of the data is 10 MB, this can be manually increased by byte number to a maximum of 2 GB. The command for this is
+
+>Resize maximum data: **-rs #**
+
 ## What to look for
 
 ## How it works
