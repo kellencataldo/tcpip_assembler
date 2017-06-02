@@ -1,8 +1,8 @@
-# Windows TCP/IP Conversation assembler and packet analyzer
+# Windows TCP/IPv4 Conversation assembler and packet analyzer
 
 ## Overview
 
-This is a tool which will reconstruct TCP/IP conversations between all IP's or a specific IP and across all ports or a specific port from data collected in a PCAP file. The tool will sort individual TCP conversations by packets and SEQ number and organize them between upload data and download data. Along with sorting the connections and packets, anomalous events detected in the TCP conversations such as an incorrect TCP teardown, set RESET bits, and duplicate packets being sent will be highlighted in the output file. This tool can be used to analyze network behavior coming into a Windows system in order to track suspicious behavior.
+This is a tool which will reconstruct TCP/IPv4 conversations between all IP's or a specific IP and across all ports or a specific port from data collected in a PCAP file. The tool will sort individual TCP conversations by packets and SEQ number and organize them between upload data and download data. Along with sorting the connections and packets, anomalous events detected in the TCP conversations such as an incorrect TCP teardown, set RESET bits, and duplicate packets being sent will be highlighted in the output file. This tool can be used to analyze network behavior coming into a Windows system in order to track suspicious behavior.
 
 ## How to use
 
@@ -50,14 +50,17 @@ ip_convo.exe -ip 127.0.0.1 -port 80 -ch -ph -rs 15 < C:\path\to\example.pcap > C
 
 ## What to look for
 
+This is an example output generated from network activity
+
+![alt text](http://i.imgur.com/d0qCfnC.png)
+
+
 ## How it works
 
 
 
 If you need to examine UDP, or another protocal such as ARP, this is best left to a more robust
 tool such as Wireshark.
-
-You can redirect the output stream into a file like this > output.txt
 
 The problem is you are not linking against the Ws2_32.lib library
 
