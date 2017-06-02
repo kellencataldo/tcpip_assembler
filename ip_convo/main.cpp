@@ -23,7 +23,7 @@ int main(int nargs, char * args[]) {
 		if (arg == "-gh") { option_flags |= 32; }
 		if (arg == "-ch") { option_flags |= 16; }
 		if (arg == "-ph") { option_flags |= 8; }
-		if (arg == "-p" && i < nargs + 1) {
+		if (arg == "-port" && i < nargs + 1) {
 			port = atoi(args[i + 1]);
 			option_flags |= 4;
 		}
