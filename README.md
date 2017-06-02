@@ -15,10 +15,15 @@ This tool is a command line application and can take several arguments in order 
 All of these can be turned off individually along with setting several other options. In total there are xx commands:
 
 >Toggle global header: **-gh**
+
 >Toggle connection headers: **-ch**
+
 >Toggle packet headers: **-ph**
+
 >Filter by a specific port: **-port #**
+
 >Filter by a specifi IP (human readable format): **-ip #**
+
 >Do not display data: **-nd**
 
 ## What to look for
