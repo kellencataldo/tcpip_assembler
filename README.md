@@ -101,13 +101,5 @@ im using the bubble sort algorithm because it works very well on nearly sorted d
 tcp will reject multiple out of place packets (?). i chose not to rely on the supplied vector::sort algorithm as i
 don't know the time complexity of the function.
 
-the TCP sequence number are a random large unsigned value. this is essentially a type of encryption and makes it very difficult
-for malicious connections to fake their identity.
 
-there is one fatal flaw which sort of puts a dent in the use of this tool which I will get into later (next line)
-
-i wanted to add support for switching the type of encoding from binary to utf 8 to utf 16 to text etc. however,
-it appears that windows has a bug related to writing utf8 and utf16 test to the command line which causes
-exe's to crash. unfortunant.
-
-tcp reset attack
+talk about the big array
