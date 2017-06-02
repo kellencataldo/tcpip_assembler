@@ -144,7 +144,6 @@
     <ClCompile Include="connection.cpp" />
     <ClCompile Include="fileread.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="connection.h" />
