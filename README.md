@@ -54,6 +54,9 @@ This is an example output generated from network activity
 
 ![example](http://i.imgur.com/TucqqZ6.png)
 
+This example includes the global header begining with *Total unique TCP/IP connections*, the conversation header beginning with *Connection between*, the packet headers beginning with *Relative sequence number*, and the data, which can be seen beneath the third packet.
+
+This network activity appears to be a relatively normal session with nothing out of the ordinary occuring. Starting with the global header, to unique TCP/IP conversations were detected. One conversation is distinguished from another conversation by the fourtuple associated with that conversation (source port, destination port, source IP, destination IP). During a browsing session, the same source IP from the same source port could connect to the same destination IP on two different ports and this will register as two seperate connections as the TCP handshake process must be done on both these ports. One type of attack to be aware of is a **malicious port scan**. A port scan involved a potentially malicious system repeatedly attempting to extablish a connection across numerous TCP ports in order to establish a TCP handshake thereby detected vulnerable ports. If the filters for a specific IP has been set, and the total number of connections is still high, this is evidence of a potential port scan on the host system.
 
 ## How it works
 
