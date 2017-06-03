@@ -1,4 +1,4 @@
-# Windows TCP/IPv4 Conversation assembler and packet analyzer
+# Windows TCP/IPv4 conversation assembler and packet analyzer
 
 ## Overview
 
