@@ -77,23 +77,8 @@ I chose c++ for this project as it has an extremely robust stream system which m
 
 Every conversation is given a unique ID. This ID is generated from two IPs involved in the conversation and the two ports used by each system which are then placed into a pairing function. The specific method used is a bitwise Z-order curve which will take two non-negative numbers and output a unique value. I used this method and not Georg Cantor's more well known pairing function as the Cantor paring function is quadratic, and therefore two numbers, each of size N, are not always bound to a number less than 2N. This unique ID made storing and sorting packets an easy process; if an ID for a packet was present in the list of already stored ID's, the packet was added to that conversation. If the ID is unique, a new conversation is initialized with this packet as the first member. 
 
+The data for every packet is not stored individually. I chose to do this as I was afraid that many malloc() calls would invariably lead to memory leakage and a static array storing each packet would also waste a considerable amount of space. Instead, malloc()ed one large block of memory. When a packet is read in, its data is added to the memory block and an integer value corresponding to that data's location in the memory block is stored. For example, the first packet processed will always have a data offset value of 0. If this packet is 100 bytes the data offset value will be incremented by 100 and this will be the next packet's data offset value. This makes the data structure of the packets extremely small while it is a simple function of pointer arithmatic to recover their data which is stored in the main data memory block. 
 
+To sort the connections I am using a pretty straightforwards bubblesort algorithm. Bubble sort works very well on nearly sorted data sets which is useful since the packets will almost always be in the correct sequence order.
 
-ntohs is an inline function which makes it less computationally heavy on the compiler (??)
-
-structures can often be treated as classes in c++ and have their own functions
-
-im using the bubble sort algorithm because it works very well on nearly sorted data sets. this should be the case for most packets as
-tcp will reject multiple out of place packets (?). i chose not to rely on the supplied vector::sort algorithm as i
-don't know the time complexity of the function.
-
-IPV6 support has not been added as it would take considerably more effort 
-(ipv6 are often encapsulated under ipv4 so as to path through ipv4 only networks. this process is called
-a 6to4 transmission). 
-
-An ipv6 packet that has been ecanpsulated in an ipv4 packet will have a protocol type of 41. With that,
-it should be a relatively easy process using structure templates to sort between ipv4 packets, and ipv4 packets
-with an ipv6 packet encapsulated underneath.
-
-
-talk about the big array
+IPV6 support has not been added yet, although it should not be too hard of a process to implement. IPv6 packets are often encapsulated under IPv4 so as to path through IPv4 only networks. This process is called a 6to4 transmission. If the packet has reached the end system, the encapsulation will be dropped. If not, the IPv6 packet will remain encapsulated with a protocol of type 41. If you are interested in examining this feature yourself, I suggest using structure templates to sort between IPv4 packets, IPv6 packets, and encapsulated IPv6 packets.
