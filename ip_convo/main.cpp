@@ -11,7 +11,7 @@ int main(int nargs, char * args[]) {
 	//packet headers
 	//specific port
 	//specific ip
-	//raw data = 0 / no data
+	//raw data / no data
 	uint8_t option_flags = 57;
 	uint16_t port = 0;
 	uint32_t ip = 0;
