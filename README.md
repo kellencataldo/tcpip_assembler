@@ -81,4 +81,6 @@ The data for every packet is not stored individually. I chose to do this as I wa
 
 To sort the connections I am using a pretty straightforwards bubblesort algorithm. Bubble sort works very well on nearly sorted data sets which is useful since the packets will almost always be in the correct sequence order.
 
+Also, if you are wondering why there are so many bitwise comparisons between what seem like random integers, these are checking flags set by either the user of the IP header. One of my professors was not a fan of preprocessor directives and I guess that stuck with me.
+
 IPV6 support has not been added yet, although it should not be too hard of a process to implement. IPv6 packets are often encapsulated under IPv4 so as to path through IPv4 only networks. This process is called a 6to4 transmission. If the packet has reached the end system, the encapsulation will be dropped. If not, the IPv6 packet will remain encapsulated with a protocol of type 41. If you are interested in examining this feature yourself, I suggest using structure templates to sort between IPv4 packets, IPv6 packets, and encapsulated IPv6 packets.
